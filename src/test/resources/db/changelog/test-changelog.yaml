@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/db/changelog/changelog.yaml
+
+  - changeSet:
+      id: 2
+      author: user
+      comment: "Insert test task data"
+      changes:
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  value: "123e4567-e89b-12d3-a456-426614174000"
+              - column:
+                  name: status
+                  value: "PENDING"
+              - column:
+                  name: threads
+                  value: 4
+              - column:
+                  name: task_type
+                  value: "SORT"

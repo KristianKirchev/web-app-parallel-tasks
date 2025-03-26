@@ -1,0 +1,29 @@
+aws:
+  s3:
+    secret-key: test
+    bucket-name: sorting-bucket
+    region: eu-central-1
+    access-key: test
+    endpoint-url: http://localhost:4566
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/changelog.yaml
+    enabled: 'true'
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: 'true'
+        show_sql: 'true'
+  datasource:
+    password: mypassword
+    driver-class-name: org.postgresql.Driver
+    username: myuser
+    url: jdbc:postgresql://localhost:5432/mydb
+springdoc:
+  api-docs:
+    path: /api-docs
+app:
+  maxThreads: '100'

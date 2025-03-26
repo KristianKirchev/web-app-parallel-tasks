@@ -1,0 +1,183 @@
+openapi: 3.0.3
+info:
+  title: Threaded Task Execution
+  description: Web application executing parallel tasks.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  '/api/v1/submitTask':
+    post:
+      summary: Submit task
+      description: Receives an unsorted array as a comma-separated string and sorts it using the specified algorithm and thread count.
+      tags:
+        - Task
+      operationId: submitTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTaskRequest'
+      responses:
+        '202':
+          description: Task submission successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitTask202Response'
+        '400':
+          description: Invalid input parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid arguments, submitting sorting task aborted."
+                required:
+                  - message
+        '500':
+          description: Server/S3 error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Server/S3 error, submitting sorting task aborted."
+                required:
+                  - message
+  '/api/v1/getStatus':
+    get:
+      summary: Check task status
+      description: Returns the result of a task based on its type.
+      parameters:
+        - in: query
+          name: taskId
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - Task
+      operationId: checkStatus
+      responses:
+        '200':
+          description: GeneralTaskInfo result response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckStatus200Response'
+        '404':
+          description: GeneralTaskInfo does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "GeneralTaskInfo not found."
+                required:
+                  - message
+components:
+  schemas:
+    SubmitTask202Response:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+      required:
+        - uuid
+
+    CheckStatus200Response:
+      type: object
+      properties:
+        taskResult:
+          $ref: '#/components/schemas/AbstractTaskResult'
+
+    AlgorithmType:
+      type: string
+      enum:
+        - Merge
+        - Quick
+        - Shell
+
+    TaskStatus:
+      type: string
+      enum:
+        - Pending
+        - In_progress
+        - Completed
+        - Failed
+
+    TaskType:
+      type: string
+      enum:
+        - Sort
+
+    AbstractTaskResult:
+      type: object
+      description: Base class for different types of task results.
+      required:
+        - taskStatus
+        - taskType
+      properties:
+        taskStatus:
+          $ref: '#/components/schemas/TaskStatus'
+        taskType:
+          $ref: '#/components/schemas/TaskType'
+      discriminator:
+        propertyName: taskType
+        mapping:
+          Sort: '#/components/schemas/SortTaskResult'
+
+    SortTaskResult:
+      allOf:
+        - $ref: '#/components/schemas/AbstractTaskResult'
+        - type: object
+          required:
+            - sortTimeMillis
+            - sortedArray
+          properties:
+            sortTimeMillis:
+              type: integer
+              format: int64
+              description: Time taken to sort in milliseconds.
+            sortedArray:
+              type: array
+              items:
+                type: number
+              description: The sorted array.
+
+    PostTaskRequest:
+      additionalProperties: false
+      properties:
+        taskType:
+          description: GeneralTaskInfo type
+          $ref: '#/components/schemas/TaskType'
+        numberOfThreads:
+          type: integer
+          description: Number of threads
+        algorithmType:
+          description: Algorithm type
+          $ref: '#/components/schemas/AlgorithmType'
+        unsortedArray:
+          type: array
+          items:
+            type: number
+
+    GetTaskResponse:
+      additionalProperties: false
+      properties:
+        taskStatus:
+          type: string
+        sortTime:
+          type: string
+        sortedArray:
+          type: array
+          items:
+            type: number
