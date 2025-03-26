@@ -1,0 +1,290 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.3</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>org.krs</groupId>
+    <artifactId>web-app-parallel-tasks</artifactId>
+    <version>1.1.0-SNAPSHOT-0</version>
+    <name>Web Application Parallel Tasks</name>
+
+    <properties>
+        <java.version>17</java.version>
+        
+        <lombok.version>1.18.36</lombok.version>
+
+        <openapi.starter.version>2.8.5</openapi.starter.version>
+        <openapi.data.version>1.8.0</openapi.data.version>
+        <openapi.generator.version>7.12.0</openapi.generator.version>
+        <swagger-annotation.version>2.2.28</swagger-annotation.version>
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+        <hibernate-validato.version>8.0.2.Final</hibernate-validato.version>
+        <expressly.version>5.0.0</expressly.version>
+
+        <aws.s3.version>2.30.36</aws.s3.version>
+        <mockito.version>5.2.0</mockito.version>
+        <liquibase.version>4.31.1</liquibase.version>
+        <postgresql.version>42.7.5</postgresql.version>
+        <junit.jupiter.version>5.12.0</junit.jupiter.version>
+        <testcontainers.version>1.20.6</testcontainers.version>
+        <jackson.version>2.18.3</jackson.version>
+        <commons-compress.version>1.27.1</commons-compress.version>
+
+        <generated-sources-dir>${project.build.directory}/generated-sources</generated-sources-dir>
+        <codegen.openapi.generated-sources-dir>${project.build.directory}/openapi
+        </codegen.openapi.generated-sources-dir>
+        <codegen.generated-resources-dir>${project.build.directory}/generated-resources
+        </codegen.generated-resources-dir>
+        <codegen.generated-test-resources-dir>${project.build.directory}/generated-test-resources
+        </codegen.generated-test-resources-dir>
+        <openapi-specs-dir>${project.basedir}/api</openapi-specs-dir>
+        <sort-spec.name>${openapi-specs-dir}/task.yaml</sort-spec.name>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${openapi.starter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-data-rest</artifactId>
+            <version>${openapi.data.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotation.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validato.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.expressly</groupId>
+            <artifactId>expressly</artifactId>
+            <version>${expressly.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>${aws.s3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>${commons-compress.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>localstack</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${openapi.generator.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-sort-api</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <output>${codegen.openapi.generated-sources-dir}</output>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <supportingFilesToGenerate>EnumConverterConfiguration.java</supportingFilesToGenerate>
+                            <ignoreFileOverride>${project.basedir}/.openapi-generator-ignore</ignoreFileOverride>
+                            <generatorName>spring</generatorName>
+                            <strictSpec>true</strictSpec>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <inputSpec>${sort-spec.name}</inputSpec>
+                            <configOptions>
+                                <library>spring-boot</library>
+                                <dateLibrary>java8</dateLibrary>
+                                <interfaceOnly>false</interfaceOnly>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <useBeanValidation>true</useBeanValidation>
+                                <useClassLevelBeanValidation>false</useClassLevelBeanValidation>
+                                <useTags>true</useTags>
+                                <java8>true</java8>
+                                <useOptional>false</useOptional>
+                                <documentationProvider>none</documentationProvider>
+                                <configPackage>com.krs.openapi</configPackage>
+                                <apiPackage>com.krs.service.sort.api</apiPackage>
+                                <modelPackage>com.krs.service.sort.model</modelPackage>
+                                <useJakartaEe>false</useJakartaEe>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <containerDefaultToNull>false</containerDefaultToNull>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <inherited>true</inherited>
+                        <id>add-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated-sources-dir}/annotations</source>
+                                <source>${codegen.openapi.generated-sources-dir}/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <inherited>true</inherited>
+                        <id>add-resources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${codegen.generated-test-resources-dir}/annotations</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

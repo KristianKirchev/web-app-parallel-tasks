@@ -1,0 +1,80 @@
+@startuml
+enum SortingType {
+    MERGE
+    QUICK
+    HEAP
+}
+
+enum StatusType {
+    PENDING
+    IN_PROGRESS
+    COMPLETED
+    FAIL
+}
+
+entity SortRequest {
+    String uuid
+    List list
+    Integer threads
+    SortingType sortingType
+    StatusType requestStatus
+}
+
+class SortingService {
+    getSortingRequest()
+}
+
+interface SortApi {
+  acceptTask()
+  getTask()
+}
+
+class SortingController {
+}
+
+class TaskQueue {
+    - BlockingQueue blockingQueue
+    addSortingTask()
+    getSortingTask()
+}
+
+class SortingEngine {
+    - Integer maxThread
+    + Integer threadInUse
+    isThereAvailableThreads()
+    getNewSortingTask()
+}
+
+class SortFactory {
+    create()
+}
+
+interface Sort {
+    sorting()
+}
+
+class MergeSort {
+    sorting() @override
+}
+
+class QuickSort {
+    sorting() @override
+}
+
+class HeapSort {
+    sorting() @override
+}
+
+SortRequest --> SortingType
+SortRequest --> StatusType
+SortingController --> SortingService
+SortingService --> SortRequest
+SortRequest --> TaskQueue
+TaskQueue --> SortingEngine
+SortingEngine --> SortFactory
+SortFactory --> Sort
+Sort <|.. MergeSort
+Sort <|.. QuickSort
+Sort <|.. HeapSort
+SortApi <|.. SortingController
+@enduml

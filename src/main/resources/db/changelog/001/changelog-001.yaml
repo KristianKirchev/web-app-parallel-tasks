@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: user
+      changes:
+        - createTable:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: threads
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: task_type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

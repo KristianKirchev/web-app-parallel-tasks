@@ -1,0 +1,44 @@
+@startuml
+!define URL #ff8080
+!define COMPONENT #99ddff
+!define STORAGE #bb99ff
+
+rectangle "WebURL" as WebUrl URL
+
+package "API Application" {
+    rectangle "Submit and get generalTaskInfo Controller\n\t  [REST Controller]\n\n\tSorting generalTaskInfo request \n\t     and response" as SortController COMPONENT
+    rectangle "  Submit generalTaskInfo\n[Post mapping]" as PostMap COMPONENT
+    rectangle "Retrieve generalTaskInfo\n[Get mapping]" as GetMap COMPONENT
+    rectangle "Persistent Task Manager\n[Service]" as PTM COMPONENT
+    rectangle "Parameter Storage\n[Abstract Service]\n\nStoring requested data" as ParamStore COMPONENT
+    rectangle "Task Orchestrator" as TaskOrch COMPONENT
+    rectangle "    Process sorting generalTaskInfo\n\t     [Service]\n\n Processing sorting tasks\nusing ThreadPoolManager" as SortService COMPONENT
+}
+
+rectangle "Pending tasks (Folder)\nUUID.csv" as PendTasks STORAGE
+rectangle "Completed tasks (Folder)\nUUID.csv" as CompTasks STORAGE
+rectangle " Task Queue\n\nPending tasks (UUID)" as TaskQueue STORAGE
+
+WebUrl --> SortController : Uses\n[JSON/HTTPS]
+SortController --> PostMap
+SortController --> GetMap
+PostMap --> PTM : Uses
+GetMap --> PTM : Uses
+PTM --> ParamStore : Uses
+PTM --> TaskOrch : Uses
+TaskOrch --> SortService : Uses
+
+ParamStore -> PendTasks : Uses
+SortService --> CompTasks : Saves to
+PTM --> TaskQueue : Uses
+
+legend right
+    |Color| Type |
+    |<URL>| Url|
+    |<COMPONENT>| Component|
+    |<STORAGE>| Storage|
+endlegend
+
+skinparam LegendBackgroundColor #ffffcc
+
+@enduml

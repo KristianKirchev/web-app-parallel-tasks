@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:17.4
+    container_name: my-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=eu-central-1
+      - DATA_DIR=/tmp/localstack/data
+    restart: on-failure
+    ports:
+      - "4566:4566"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
